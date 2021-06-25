@@ -8,14 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.alexzh.ordercoffee.currentRoute
 import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
 
 @Composable
 fun HomeScreen() {
     val tabs = listOf(
-        Screen.CoffeeDrinks,
-        Screen.Basket,
-        Screen.Profile
+        NavigationItem.CoffeeDrinks,
+        NavigationItem.Basket,
+        NavigationItem.Profile
     )
 
     val navController = rememberNavController()
@@ -26,21 +27,21 @@ fun HomeScreen() {
                 BottomNavigation {
                     tabs.forEach { screen ->
                         BottomNavigationItem(
-                            selected = false,
+                            selected = navController.currentRoute() == screen.route,
                             onClick = {
-                                navController.navigate(screen.screenName)
+                                navController.navigate(screen.route)
                             },
-                            label = { Text(screen.screenName) },
+                            label = { Text(screen.route) },
                             icon = {  }
                         )
                     }
                 }
             }
         ) {
-            NavHost(navController = navController, startDestination = Screen.CoffeeDrinks.screenName) {
-                composable(Screen.CoffeeDrinks.screenName) { CoffeeDrinksScreen(navController) }
-                composable(Screen.Basket.screenName) { BasketScreen(navController) }
-                composable(Screen.Profile.screenName) { ProfileScreen(navController) }
+            NavHost(navController = navController, startDestination = NavigationItem.CoffeeDrinks.route) {
+                composable(NavigationItem.CoffeeDrinks.route) { CoffeeDrinksScreen(navController) }
+                composable(NavigationItem.Basket.route) { BasketScreen(navController) }
+                composable(NavigationItem.Profile.route) { ProfileScreen(navController) }
             }
         }
     }
