@@ -1,10 +1,13 @@
 package com.alexzh.ordercoffee.ui.screen
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -37,11 +40,13 @@ fun HomeScreen() {
                     }
                 }
             }
-        ) {
-            NavHost(navController = navController, startDestination = NavigationItem.CoffeeDrinks.route) {
-                composable(NavigationItem.CoffeeDrinks.route) { CoffeeDrinksScreen(navController) }
-                composable(NavigationItem.Basket.route) { BasketScreen(navController) }
-                composable(NavigationItem.Profile.route) { ProfileScreen(navController) }
+        ) { innerPadding -> 
+            Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                NavHost(navController = navController, startDestination = NavigationItem.CoffeeDrinks.route) {
+                    composable(NavigationItem.CoffeeDrinks.route) { CoffeeDrinksScreen(navController) }
+                    composable(NavigationItem.Basket.route) { BasketScreen(navController) }
+                    composable(NavigationItem.Profile.route) { ProfileScreen(navController) }
+                }
             }
         }
     }
