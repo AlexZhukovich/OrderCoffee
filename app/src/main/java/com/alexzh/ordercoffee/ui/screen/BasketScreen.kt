@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -51,6 +52,13 @@ fun BasketScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        TopAppBar {
+            Text(
+                text = "Coffee Drinks",
+                modifier = Modifier.padding(horizontal = 12.dp),
+                fontSize = 18.sp
+            )
+        }
         PaymentInfo(
             deliveryCosts = BigDecimal(5),
             total = BigDecimal(120),

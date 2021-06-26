@@ -2,16 +2,15 @@ package com.alexzh.ordercoffee.ui.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.currentRoute
+import com.alexzh.ordercoffee.ui.navigation.NavigationItem
 import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
 
 @Composable
@@ -28,14 +27,20 @@ fun HomeScreen() {
         Scaffold(
             bottomBar = {
                 BottomNavigation {
-                    tabs.forEach { screen ->
+                    tabs.forEach { navigationItem ->
                         BottomNavigationItem(
-                            selected = navController.currentRoute() == screen.route,
+                            selected = navController.currentRoute() == navigationItem.route,
                             onClick = {
-                                navController.navigate(screen.route)
+                                navController.navigate(navigationItem.route)
                             },
-                            label = { Text(screen.route) },
-                            icon = {  }
+                            label = null,
+                            icon = {
+                                // TODO: fix contentDescription
+                                Icon(
+                                    painter = painterResource(id = navigationItem.icon),
+                                    contentDescription = null
+                                )
+                            }
                         )
                     }
                 }
