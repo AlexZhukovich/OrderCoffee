@@ -20,11 +20,13 @@ import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.data.DummyData
 import com.alexzh.ordercoffee.data.model.BasketProduct
 import com.alexzh.ordercoffee.ui.component.ProductCounter
+import com.alexzh.ordercoffee.ui.navigation.Screen
 import java.math.BigDecimal
 
 @Composable
 fun BasketScreen(
-    navController: NavController
+    rootNavController: NavController,
+    tabsNavController: NavController
 ) {
     val context = LocalContext.current
     val items = DummyData.getBasketProducts()
@@ -34,7 +36,7 @@ fun BasketScreen(
     ) {
         TopAppBar {
             Text(
-                text = "Coffee Drinks",
+                text = "Basket",
                 modifier = Modifier.padding(horizontal = 12.dp),
                 fontSize = 18.sp
             )
@@ -44,17 +46,17 @@ fun BasketScreen(
             total = BigDecimal(120),
             currency = '€',
             onPayed = {
-                Toast.makeText(context, "Pay -> clicked", Toast.LENGTH_SHORT).show()
+                rootNavController.navigate(Screen.Success.route)
             }
         )
         Spacer(modifier = Modifier.height(8.dp))
         ProductList(
             basketProducts = items,
             onProductIncreased = {
-                Toast.makeText(context, "onProductIncreased -> clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "onProductIncreased with ID: $it", Toast.LENGTH_SHORT).show()
             },
             onProductDecreased = {
-                Toast.makeText(context, "onProductDecreased -> clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "onProductDecreased with ID: $it", Toast.LENGTH_SHORT).show()
             }
         )
     }
@@ -216,5 +218,8 @@ private fun PaymentInfo_Preview() {
 @Preview
 @Composable
 private fun BasketScreen_Preview() {
-    BasketScreen(rememberNavController())
+    BasketScreen(
+        rememberNavController(),
+        rememberNavController()
+    )
 }

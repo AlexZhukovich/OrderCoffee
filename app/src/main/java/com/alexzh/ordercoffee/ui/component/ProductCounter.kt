@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,13 +25,14 @@ import com.alexzh.ordercoffee.data.model.BasketProduct
 fun ProductCounter(
     basketProduct: BasketProduct,
     onProductIncreased: (Long) -> Unit,
-    onProductDecreased: (Long) -> Unit
+    onProductDecreased: (Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         shape = RoundedCornerShape(size = 5.dp),
         border = BorderStroke(1.dp, Color.Gray),
         color = Color.Transparent,
-        modifier = Modifier.size(width = 80.dp, height = 30.dp),
+        modifier = Modifier.size(width = 80.dp, height = 30.dp).composed { modifier },
     ) {
         Row(
             horizontalArrangement = Arrangement.Center

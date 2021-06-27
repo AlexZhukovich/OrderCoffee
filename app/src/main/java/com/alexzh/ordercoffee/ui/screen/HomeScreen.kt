@@ -2,36 +2,47 @@ package com.alexzh.ordercoffee.ui.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.alexzh.ordercoffee.currentRoute
 import com.alexzh.ordercoffee.ui.navigation.NavigationItem
 import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     val tabs = listOf(
         NavigationItem.CoffeeDrinks,
         NavigationItem.Basket,
         NavigationItem.Profile
     )
 
-    val navController = rememberNavController()
+    val tabsNavController = rememberNavController()
 
     OrderCoffeeTheme {
         Scaffold(
             bottomBar = {
                 BottomNavigation {
                     tabs.forEach { navigationItem ->
+                        val currentRoute = tabsNavController.currentRoute()
+
                         BottomNavigationItem(
-                            selected = navController.currentRoute() == navigationItem.route,
+                            selected = currentRoute == navigationItem.route || navigationItem.routesIncluded.contains(currentRoute),
                             onClick = {
-                                navController.navigate(navigationItem.route)
+                                tabsNavController.navigate(navigationItem.route)
                             },
                             label = null,
                             icon = {
@@ -47,10 +58,31 @@ fun HomeScreen() {
             }
         ) { innerPadding -> 
             Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
-                NavHost(navController = navController, startDestination = NavigationItem.CoffeeDrinks.route) {
-                    composable(NavigationItem.CoffeeDrinks.route) { CoffeeDrinksScreen(navController) }
-                    composable(NavigationItem.Basket.route) { BasketScreen(navController) }
-                    composable(NavigationItem.Profile.route) { ProfileScreen(navController) }
+                val uri = "https://example.com"
+
+                NavHost(navController = tabsNavController, startDestination = NavigationItem.CoffeeDrinks.route) {
+                    composable(NavigationItem.CoffeeDrinks.route) { CoffeeDrinksScreen(tabsNavController) }
+
+                    //   adb shell am start -W -a android.intent.action.VIEW -d "https://example.com/CoffeeDrinkDetails/coffeeDrinkId=10"
+                    composable(
+                        route = NavigationItem.CoffeeDrinkDetails.route,
+                        arguments = listOf(navArgument("coffeeDrinkId") { type = NavType.LongType } ),
+                        deepLinks = listOf(navDeepLink { uriPattern = "$uri/CoffeeDrinkDetails/coffeeDrinkId={coffeeDrinkId}" })
+                    ) {
+                        CoffeeDrinkDetailsScreen(
+                            navController = tabsNavController,
+                            coffeeDrinkId = it.arguments?.getLong("coffeeDrinkId") ?: -1L
+                        )
+                    }
+
+                    composable(NavigationItem.Basket.route) { BasketScreen(navController, tabsNavController) }
+
+
+                    composable(
+                        NavigationItem.Profile.route
+                    ) {
+                        ProfileScreen(tabsNavController)
+                    }
                 }
             }
         }

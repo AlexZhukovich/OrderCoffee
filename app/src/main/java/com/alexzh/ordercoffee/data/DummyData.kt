@@ -115,16 +115,21 @@ object DummyData {
         )
     )
 
-    fun getCoffeeDrinks() = listOf(
-        AMERICANO,
-        CAPPUCCINO,
-        ESPRESSO,
-        ESPRESSO_MACCHIATO,
-        FRAPPINO,
-        ICED_MOCHA,
-        IRISH_COFFEE,
-        LATTE,
-        LATTE_MACCHIATO,
-        MOCHA
+    fun getAllBasketCoffeeDrinks() = listOf(
+        BasketProduct(AMERICANO, 0),
+        BasketProduct(CAPPUCCINO, 0),
+        BasketProduct(ESPRESSO, 0),
+        BasketProduct(ESPRESSO_MACCHIATO, 0),
+        BasketProduct(FRAPPINO, 0),
+        BasketProduct(ICED_MOCHA, 0),
+        BasketProduct(IRISH_COFFEE, 0),
+        BasketProduct(LATTE, 0),
+        BasketProduct(LATTE_MACCHIATO, 0),
+        BasketProduct(MOCHA, 0)
     )
+
+    fun findBasketCoffeeDrink(coffeeDrinkId: Long) : BasketProduct? {
+        return getAllBasketCoffeeDrinks()
+            .firstOrNull { basketProduct -> basketProduct.product.id == coffeeDrinkId }
+    }
 }
