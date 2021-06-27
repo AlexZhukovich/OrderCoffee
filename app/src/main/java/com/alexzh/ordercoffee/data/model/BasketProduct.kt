@@ -1,4 +1,4 @@
-package com.alexzh.ordercoffee.model
+package com.alexzh.ordercoffee.data.model
 
 data class BasketProduct(
     val product: Product,

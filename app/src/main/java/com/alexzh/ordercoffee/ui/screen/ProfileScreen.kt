@@ -7,7 +7,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,7 +70,9 @@ fun ProfileListItem(
 ) {
     Row(
         horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
+            .height(50.dp)
             .clickable {
 
             }
@@ -77,7 +81,8 @@ fun ProfileListItem(
         // TODO: fix contentDescription
         Icon(
             painter = painterResource(id = item.icon),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.fillMaxHeight()
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(

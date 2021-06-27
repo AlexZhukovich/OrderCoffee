@@ -7,16 +7,18 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.alexzh.ordercoffee.model.BasketProduct
-import com.alexzh.ordercoffee.model.Product
+import com.alexzh.ordercoffee.data.DummyData
+import com.alexzh.ordercoffee.data.model.BasketProduct
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 import java.math.BigDecimal
 
@@ -24,30 +26,8 @@ import java.math.BigDecimal
 fun BasketScreen(
     navController: NavController
 ) {
-
     val context = LocalContext.current
-    val items = listOf(
-        BasketProduct(
-            Product(1L, "Test product 1", "Description of the 'Test product 1'"),
-            5
-        ),
-        BasketProduct(
-            Product(2L, "Test product 2", "Description of the 'Test product 2'"),
-            4
-        ),
-        BasketProduct(
-            Product(3L, "Test product 3", "Description of the 'Test product 3'"),
-            3
-        ),
-        BasketProduct(
-            Product(4L, "Test product 4", "Description of the 'Test product 4'"),
-            2
-        ),
-        BasketProduct(
-            Product(5L, "Test product 5", "Description of the 'Test product 5'"),
-            1
-        ),
-    )
+    val items = DummyData.getBasketProducts()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -70,8 +50,12 @@ fun BasketScreen(
         Spacer(modifier = Modifier.height(8.dp))
         ProductList(
             basketProducts = items,
-            onProductIncreased = { },
-            onProductDecreased = { }
+            onProductIncreased = {
+                Toast.makeText(context, "onProductIncreased -> clicked", Toast.LENGTH_SHORT).show()
+            },
+            onProductDecreased = {
+                Toast.makeText(context, "onProductDecreased -> clicked", Toast.LENGTH_SHORT).show()
+            }
         )
     }
 }
@@ -164,29 +148,33 @@ private fun ProductItem(
     onProductIncreased: (Long) -> Unit,
     onProductDecreased: (Long) -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier.weight(4f)
+        Text(
+            text = basketProduct.product.name,
+            fontSize = 18.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Row(
+            verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = basketProduct.product.name,
-                fontSize = 18.sp
-            )
-            Text(
                 text = basketProduct.product.description,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(4f)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            ProductCounter(
+                basketProduct = basketProduct,
+                onProductIncreased = onProductIncreased,
+                onProductDecreased = onProductDecreased
             )
         }
-
-        ProductCounter(
-            basketProduct = basketProduct,
-            onProductIncreased = onProductIncreased,
-            onProductDecreased = onProductDecreased
-        )
     }
 }
 
@@ -194,11 +182,7 @@ private fun ProductItem(
 @Composable
 private fun ProductItem_Preview() {
     val product = BasketProduct(
-        product = Product(
-            id = 42L,
-            name = "Test product",
-            description = "Description of the 'Test product'"
-        ),
+        product = DummyData.AMERICANO,
         count = 42
     )
     ProductItem(
