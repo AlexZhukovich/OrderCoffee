@@ -1,6 +1,5 @@
-package com.alexzh.ordercoffee.ui.screen
+package com.alexzh.ordercoffee.ui.screen.coffeedrinks
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,8 +8,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,35 +19,43 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.data.DummyData
 import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 
 @Composable
 fun CoffeeDrinksScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: CoffeeDrinksViewModel = CoffeeDrinksViewModel()
 ) {
-    val context = LocalContext.current
-    val items = DummyData.getAllBasketCoffeeDrinks()
-
-    Column {
-        TopAppBar {
-            Text(
-                text = "Coffee Drinks",
-                modifier = Modifier.padding(horizontal = 12.dp),
-                fontSize = 18.sp
-            )
-        }
-        CoffeeDrinkList(
-            items = items,
-            onCoffeeDrink = {
-                navController.navigate("CoffeeDrinkDetails/$it")
-            },
-            onCoffeeDrinkCountIncreased = {
-                Toast.makeText(context, "increased coffee drink with ID: $it", Toast.LENGTH_SHORT).show()
-            },
-            onCoffeeDrinkCountDecreased = {
-                Toast.makeText(context, "decreased coffee drink with ID: $it", Toast.LENGTH_SHORT).show()
+    viewModel.loadCoffeeDrinks()
+    viewModel.uiState.observeAsState(initial = UiState.Loading).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> { }
+            is UiState.Success -> {
+                Column {
+                    TopAppBar {
+                        Text(
+                            text = "Coffee Drinks",
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            fontSize = 18.sp
+                        )
+                    }
+                    CoffeeDrinkList(
+                        items = uiState.data,
+                        onCoffeeDrink = {
+                            navController.navigate("CoffeeDrinkDetails/$it")
+                        },
+                        onCoffeeDrinkCountIncreased = {
+                              viewModel.addCoffeeDrink(it)
+                        },
+                        onCoffeeDrinkCountDecreased = {
+                            viewModel.removeCoffeeDrink(it)
+                        }
+                    )
+                }
             }
-        )
+            is UiState.Error -> {}
+        }
     }
 }
 
@@ -93,11 +100,13 @@ fun CoffeeDrinkItem(
         Image(
             painter = painterResource(id = basketProduct.product.image),
             contentDescription = null,
-            modifier = Modifier.size(96.dp)
+            modifier = Modifier
+                .size(96.dp)
                 .padding(start = 8.dp)
         )
         Column(
-            modifier = Modifier.weight(1.0f)
+            modifier = Modifier
+                .weight(1.0f)
                 .padding(top = 4.dp)
         ) {
             Text(
@@ -113,7 +122,8 @@ fun CoffeeDrinkItem(
             )
         }
         Box(
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .fillMaxHeight()
                 .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
         ) {
             ProductCounter(

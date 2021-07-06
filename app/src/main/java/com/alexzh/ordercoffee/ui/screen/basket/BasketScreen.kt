@@ -1,6 +1,5 @@
-package com.alexzh.ordercoffee.ui.screen
+package com.alexzh.ordercoffee.ui.screen.basket
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
@@ -8,8 +7,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,46 +18,55 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.data.DummyData
 import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 import com.alexzh.ordercoffee.ui.navigation.Screen
 import java.math.BigDecimal
 
+// TODO: migrate to external router
 @Composable
 fun BasketScreen(
     rootNavController: NavController,
-    tabsNavController: NavController
+    tabsNavController: NavController,
+    viewModel: BasketViewModel = BasketViewModel()
 ) {
-    val context = LocalContext.current
-    val items = DummyData.getBasketProducts()
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar {
-            Text(
-                text = "Basket",
-                modifier = Modifier.padding(horizontal = 12.dp),
-                fontSize = 18.sp
-            )
+    viewModel.loadCoffeeDrinks()
+    viewModel.uiState.observeAsState(initial = UiState.Loading).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> { }
+            is UiState.Success -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar {
+                        Text(
+                            text = "Basket",
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            fontSize = 18.sp
+                        )
+                    }
+                    PaymentInfo(
+                        deliveryCosts = BigDecimal(5),
+                        total = uiState.data.totalPrice,
+                        currency = '€',
+                        onPayed = {
+                            rootNavController.navigate(Screen.Success.route)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductList(
+                        basketProducts = uiState.data.products,
+                        onProductIncreased = {
+                            viewModel.addCoffeeDrink(it)
+                        },
+                        onProductDecreased = {
+                            viewModel.removeCoffeeDrink(it)
+                        }
+                    )
+                }
+            }
+            is UiState.Error -> { }
         }
-        PaymentInfo(
-            deliveryCosts = BigDecimal(5),
-            total = BigDecimal(120),
-            currency = '€',
-            onPayed = {
-                rootNavController.navigate(Screen.Success.route)
-            }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        ProductList(
-            basketProducts = items,
-            onProductIncreased = {
-                Toast.makeText(context, "onProductIncreased with ID: $it", Toast.LENGTH_SHORT).show()
-            },
-            onProductDecreased = {
-                Toast.makeText(context, "onProductDecreased with ID: $it", Toast.LENGTH_SHORT).show()
-            }
-        )
     }
 }
 

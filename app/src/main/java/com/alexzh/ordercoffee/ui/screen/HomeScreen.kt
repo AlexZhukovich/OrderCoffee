@@ -18,6 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.alexzh.ordercoffee.currentRoute
 import com.alexzh.ordercoffee.ui.navigation.NavigationItem
+import com.alexzh.ordercoffee.ui.screen.basket.BasketScreen
+import com.alexzh.ordercoffee.ui.screen.coffeedrinks.CoffeeDrinksScreen
 import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
 
 @Composable
