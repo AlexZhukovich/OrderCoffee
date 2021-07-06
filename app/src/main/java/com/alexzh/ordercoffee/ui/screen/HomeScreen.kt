@@ -9,14 +9,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
-import com.alexzh.ordercoffee.currentRoute
+import com.alexzh.ordercoffee.navigation.Router
+import com.alexzh.ordercoffee.navigation.currentRoute
 import com.alexzh.ordercoffee.ui.navigation.NavigationItem
 import com.alexzh.ordercoffee.ui.screen.basket.BasketScreen
 import com.alexzh.ordercoffee.ui.screen.coffeedrinks.CoffeeDrinksScreen
@@ -24,7 +24,7 @@ import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    externalRouter: Router
 ) {
     val tabs = listOf(
         NavigationItem.CoffeeDrinks,
@@ -77,7 +77,7 @@ fun HomeScreen(
                         )
                     }
 
-                    composable(NavigationItem.Basket.route) { BasketScreen(navController, tabsNavController) }
+                    composable(NavigationItem.Basket.route) { BasketScreen(externalRouter, tabsNavController) }
 
 
                     composable(

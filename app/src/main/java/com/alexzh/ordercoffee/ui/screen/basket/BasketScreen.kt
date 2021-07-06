@@ -18,15 +18,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.data.DummyData
 import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.navigation.Router
+import com.alexzh.ordercoffee.navigation.createRouter
 import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 import com.alexzh.ordercoffee.ui.navigation.Screen
 import java.math.BigDecimal
 
-// TODO: migrate to external router
 @Composable
 fun BasketScreen(
-    rootNavController: NavController,
+    externalRouter: Router,
     tabsNavController: NavController,
     viewModel: BasketViewModel = BasketViewModel()
 ) {
@@ -50,7 +51,7 @@ fun BasketScreen(
                         total = uiState.data.totalPrice,
                         currency = '€',
                         onPayed = {
-                            rootNavController.navigate(Screen.Success.route)
+                            externalRouter.navigateTo(Screen.Success.route)
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -236,7 +237,7 @@ private fun PaymentInfo_Preview() {
 @Composable
 private fun BasketScreen_Preview() {
     BasketScreen(
-        rememberNavController(),
+        createRouter { },
         rememberNavController()
     )
 }

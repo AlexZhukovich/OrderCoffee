@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.alexzh.ordercoffee.navigation.createRouter
 import com.alexzh.ordercoffee.ui.navigation.Screen
 import com.alexzh.ordercoffee.ui.screen.HomeScreen
 import com.alexzh.ordercoffee.ui.screen.SuccessScreen
@@ -19,8 +20,17 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 NavHost(navController = navController, startDestination = Screen.Home.route) {
-                    composable(Screen.Home.route) { HomeScreen(navController) }
-                    composable(Screen.Success.route) { SuccessScreen(navController) }
+                    composable(Screen.Home.route) {
+                        HomeScreen(
+                            createRouter { route ->
+                                navController.navigate(route)
+                            }
+                        )
+                    }
+
+                    composable(Screen.Success.route) {
+                        SuccessScreen(navController)
+                    }
                 }
             }
         }

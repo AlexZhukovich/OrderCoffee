@@ -1,4 +1,4 @@
-package com.alexzh.ordercoffee
+package com.alexzh.ordercoffee.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
