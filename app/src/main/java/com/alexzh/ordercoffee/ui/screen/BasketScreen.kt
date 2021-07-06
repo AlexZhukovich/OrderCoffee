@@ -4,10 +4,10 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -139,6 +139,7 @@ private fun ProductList(
                     onProductIncreased = onProductIncreased,
                     onProductDecreased = onProductDecreased
                 )
+                Divider()
             }
         }
     }
@@ -150,27 +151,34 @@ private fun ProductItem(
     onProductIncreased: (Long) -> Unit,
     onProductDecreased: (Long) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+    Row(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = basketProduct.product.name,
-            fontSize = 18.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Row(
-            verticalAlignment = Alignment.Bottom
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .weight(1.0f)
         ) {
+            Text(
+                text = basketProduct.product.name,
+                fontSize = 18.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
             Text(
                 text = basketProduct.product.description,
                 fontSize = 14.sp,
-                maxLines = 2,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(4f)
+                modifier = Modifier.fillMaxWidth()
+                        .padding(top = 4.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
+        ) {
             ProductCounter(
                 basketProduct = basketProduct,
                 onProductIncreased = onProductIncreased,
@@ -178,6 +186,7 @@ private fun ProductItem(
             )
         }
     }
+
 }
 
 @Preview

@@ -9,7 +9,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,7 +40,6 @@ fun CoffeeDrinksScreen(
         CoffeeDrinkList(
             items = items,
             onCoffeeDrink = {
-//                Toast.makeText(context, "click on coffee drink with ID: $it", Toast.LENGTH_SHORT).show()
                 navController.navigate("CoffeeDrinkDetails/$it")
             },
             onCoffeeDrinkCountIncreased = {
@@ -61,9 +59,7 @@ fun CoffeeDrinkList(
     onCoffeeDrinkCountIncreased: (Long) -> Unit,
     onCoffeeDrinkCountDecreased: (Long) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
+    LazyColumn {
         items.forEach { item ->
             item {
                 CoffeeDrinkItem(
@@ -72,9 +68,7 @@ fun CoffeeDrinkList(
                     onCoffeeDrinkCountIncreased = onCoffeeDrinkCountIncreased,
                     onCoffeeDrinkCountDecreased = onCoffeeDrinkCountDecreased
                 )
-                Spacer(modifier = Modifier.height(4.dp))
                 Divider()
-                Spacer(modifier = Modifier.height(4.dp))
             }
         }
     }
@@ -93,14 +87,19 @@ fun CoffeeDrinkItem(
             .clickable {
                 onCoffeeDrink(basketProduct.product.id)
             }
+
     ) {
         // TODO: fix contentDescription
         Image(
             painter = painterResource(id = basketProduct.product.image),
             contentDescription = null,
             modifier = Modifier.size(96.dp)
+                .padding(start = 8.dp)
         )
-        Column {
+        Column(
+            modifier = Modifier.weight(1.0f)
+                .padding(top = 4.dp)
+        ) {
             Text(
                 text = basketProduct.product.name,
                 modifier = Modifier.fillMaxWidth(),
@@ -108,20 +107,20 @@ fun CoffeeDrinkItem(
             )
             Text(
                 text = basketProduct.product.description,
-                maxLines = 2,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.fillMaxWidth()
             )
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                ProductCounter(
-                    basketProduct = basketProduct,
-                    onProductIncreased = { onCoffeeDrinkCountIncreased(basketProduct.product.id) },
-                    onProductDecreased = { onCoffeeDrinkCountDecreased(basketProduct.product.id) },
-                    modifier = Modifier.align(Alignment.BottomEnd)
-                )
-            }
+        }
+        Box(
+            modifier = Modifier.fillMaxHeight()
+                .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
+        ) {
+            ProductCounter(
+                basketProduct = basketProduct,
+                onProductIncreased = { onCoffeeDrinkCountIncreased(basketProduct.product.id) },
+                onProductDecreased = { onCoffeeDrinkCountDecreased(basketProduct.product.id) }
+            )
         }
     }
 }

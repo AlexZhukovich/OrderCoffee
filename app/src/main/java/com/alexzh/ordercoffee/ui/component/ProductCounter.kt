@@ -3,7 +3,7 @@ package com.alexzh.ordercoffee.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -32,40 +32,40 @@ fun ProductCounter(
         shape = RoundedCornerShape(size = 5.dp),
         border = BorderStroke(1.dp, Color.Gray),
         color = Color.Transparent,
-        modifier = Modifier.size(width = 80.dp, height = 30.dp).composed { modifier },
+        modifier = Modifier.size(width = 40.dp, height = 85.dp).composed { modifier },
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center
+        Column(
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "—",
-                fontSize = 22.sp,
+                text = "＋",
+                fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.size(32.dp)
                     .weight(1f)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterHorizontally)
                     .clickable {
-                        onProductDecreased(basketProduct.product.id)
+                        onProductIncreased(basketProduct.product.id)
                     }
             )
             Text(
                 text = basketProduct.count.toString(),
                 modifier = Modifier
                     .weight(1f)
-                    .align(Alignment.CenterVertically),
-                fontSize = 22.sp,
+                    .align(Alignment.CenterHorizontally),
+                fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "＋",
-                fontSize = 22.sp,
+                text = "—",
+                fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.size(32.dp)
                     .weight(1f)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterHorizontally)
                     .clickable {
-                        onProductIncreased(basketProduct.product.id)
+                        onProductDecreased(basketProduct.product.id)
                     }
             )
         }
