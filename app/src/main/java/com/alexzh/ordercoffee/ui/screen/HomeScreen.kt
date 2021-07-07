@@ -44,7 +44,9 @@ fun HomeScreen(
                         BottomNavigationItem(
                             selected = currentRoute == navigationItem.route || navigationItem.routesIncluded.contains(currentRoute),
                             onClick = {
-                                tabsNavController.navigate(navigationItem.route)
+                                if (currentRoute != navigationItem.route) {
+                                    tabsNavController.navigate(navigationItem.route)
+                                }
                             },
                             label = null,
                             icon = {

@@ -22,7 +22,6 @@ import com.alexzh.ordercoffee.navigation.Router
 import com.alexzh.ordercoffee.navigation.createRouter
 import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
-import com.alexzh.ordercoffee.ui.navigation.Screen
 import java.math.BigDecimal
 
 @Composable
@@ -50,8 +49,9 @@ fun BasketScreen(
                         deliveryCosts = BigDecimal(5),
                         total = uiState.data.totalPrice,
                         currency = '€',
+                        isPayButtonEnabled = uiState.data.products.isNotEmpty(),
                         onPayed = {
-                            externalRouter.navigateTo(Screen.Success.route)
+                            externalRouter.navigateTo("Success")
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -76,6 +76,7 @@ private fun PaymentInfo(
     deliveryCosts: BigDecimal,
     total: BigDecimal,
     currency: Char,
+    isPayButtonEnabled: Boolean,
     onPayed: () -> Unit
 ) {
     Column(
@@ -83,7 +84,7 @@ private fun PaymentInfo(
     ) {
         PaymentInfoItem(name = "Delivery Costs:", value = deliveryCosts, currency = currency)
         PaymentInfoItem(name = "Total:", value = total, currency = currency)
-        PayButton(onPayed = onPayed)
+        PayButton(isButtonEnabled = isPayButtonEnabled, onPayed = onPayed)
     }
 }
 
@@ -119,9 +120,11 @@ private fun PaymentInfoItem(
 
 @Composable
 private fun PayButton(
+    isButtonEnabled: Boolean,
     onPayed: () -> Unit
 ) {
     Button(
+        enabled = isButtonEnabled,
         onClick = { onPayed() },
         modifier = Modifier
             .fillMaxWidth()
@@ -229,6 +232,7 @@ private fun PaymentInfo_Preview() {
         deliveryCosts = BigDecimal(5),
         total = BigDecimal(42),
         currency = '$',
+        isPayButtonEnabled = true,
         onPayed = { }
     )
 }

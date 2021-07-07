@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.navigation.createRouter
 import com.alexzh.ordercoffee.ui.navigation.Screen
 import com.alexzh.ordercoffee.ui.screen.HomeScreen
-import com.alexzh.ordercoffee.ui.screen.SuccessScreen
+import com.alexzh.ordercoffee.ui.screen.success.SuccessScreen
 import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,9 +28,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(Screen.Success.route) {
-                        SuccessScreen(navController)
-                    }
+                    composable(route = Screen.Success.route) { SuccessScreen(navController) }
                 }
             }
         }

@@ -2,9 +2,7 @@ package com.alexzh.ordercoffee.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -41,7 +39,8 @@ fun ProductCounter(
                 text = "＋",
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.height(36.dp)
+                    .fillMaxWidth()
                     .weight(1f)
                     .align(Alignment.CenterHorizontally)
                     .clickable {
@@ -61,7 +60,8 @@ fun ProductCounter(
                 text = "—",
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.height(36.dp)
+                    .fillMaxWidth()
                     .weight(1f)
                     .align(Alignment.CenterHorizontally)
                     .clickable {

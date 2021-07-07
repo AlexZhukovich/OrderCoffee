@@ -63,4 +63,8 @@ object RuntimeOrderCoffeeDrinksRepository : OrderCoffeeDrinksRepository {
         }
         return flowOf(result)
     }
+
+    override suspend fun clear() {
+        products.clear()
+    }
 }

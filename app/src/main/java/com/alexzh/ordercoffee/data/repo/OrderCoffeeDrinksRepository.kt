@@ -12,4 +12,6 @@ interface OrderCoffeeDrinksRepository {
     suspend fun add(productId: Long): Flow<Boolean>
 
     suspend fun remove(productId: Long): Flow<Boolean>
+
+    suspend fun clear()
 }

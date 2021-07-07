@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -39,6 +40,14 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("androidx.compose.ui:ui-tooling:1.0.0-beta09")
+        force("androidx.compose.ui:ui-tooling-data:1.0.0-beta09")
+        force("androidx.compose.ui:ui-tooling-preview:1.0.0-beta09")
     }
 }
 

@@ -1,8 +1,11 @@
 package com.alexzh.ordercoffee.data.model
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
+@Parcelize
 data class Product(
     val id: Long,
     val name: String,
@@ -10,4 +13,4 @@ data class Product(
     val description: String,
     val size: String,
     val price: BigDecimal
-)
+): Parcelable
