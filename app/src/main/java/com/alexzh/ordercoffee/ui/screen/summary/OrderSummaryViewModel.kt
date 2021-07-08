@@ -1,4 +1,4 @@
-package com.alexzh.ordercoffee.ui.screen.success
+package com.alexzh.ordercoffee.ui.screen.summary
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import com.alexzh.ordercoffee.ui.common.UiState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SuccessViewModel(
+class OrderSummaryViewModel(
     private val repository: OrderCoffeeDrinksRepository = RuntimeOrderCoffeeDrinksRepository
 ) : ViewModel() {
     private val _uiState: MutableLiveData<UiState<List<BasketProduct>>> = MutableLiveData()

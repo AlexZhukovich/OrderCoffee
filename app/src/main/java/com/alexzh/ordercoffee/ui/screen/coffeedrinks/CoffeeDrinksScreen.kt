@@ -15,8 +15,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.data.DummyData
 import com.alexzh.ordercoffee.data.model.BasketProduct
 import com.alexzh.ordercoffee.ui.common.UiState
@@ -24,7 +22,7 @@ import com.alexzh.ordercoffee.ui.component.ProductCounter
 
 @Composable
 fun CoffeeDrinksScreen(
-    navController: NavController,
+    navigateToCoffeeDrinkDetails: (Long) -> Unit,
     viewModel: CoffeeDrinksViewModel = CoffeeDrinksViewModel()
 ) {
     viewModel.loadCoffeeDrinks()
@@ -42,9 +40,7 @@ fun CoffeeDrinksScreen(
                     }
                     CoffeeDrinkList(
                         items = uiState.data,
-                        onCoffeeDrink = {
-                            navController.navigate("CoffeeDrinkDetails/$it")
-                        },
+                        onCoffeeDrink = navigateToCoffeeDrinkDetails,
                         onCoffeeDrinkCountIncreased = {
                               viewModel.addCoffeeDrink(it)
                         },
@@ -149,5 +145,7 @@ fun CoffeeDrinkItem_Preview() {
 @Preview
 @Composable
 fun CoffeeDrinksScreen_Preview() {
-    CoffeeDrinksScreen(navController = rememberNavController())
+    CoffeeDrinksScreen(
+        navigateToCoffeeDrinkDetails = { }
+    )
 }

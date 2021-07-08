@@ -18,6 +18,7 @@ import androidx.navigation.navDeepLink
 import com.alexzh.ordercoffee.navigation.Router
 import com.alexzh.ordercoffee.navigation.currentRoute
 import com.alexzh.ordercoffee.ui.navigation.NavigationItem
+import com.alexzh.ordercoffee.ui.navigation.Screen
 import com.alexzh.ordercoffee.ui.screen.basket.BasketScreen
 import com.alexzh.ordercoffee.ui.screen.coffeedrinks.CoffeeDrinksScreen
 import com.alexzh.ordercoffee.ui.theme.OrderCoffeeTheme
@@ -32,20 +33,20 @@ fun HomeScreen(
         NavigationItem.Profile
     )
 
-    val tabsNavController = rememberNavController()
+    val navController = rememberNavController()
 
     OrderCoffeeTheme {
         Scaffold(
             bottomBar = {
                 BottomNavigation {
                     tabs.forEach { navigationItem ->
-                        val currentRoute = tabsNavController.currentRoute()
+                        val currentRoute = navController.currentRoute()
 
                         BottomNavigationItem(
                             selected = currentRoute == navigationItem.route || navigationItem.routesIncluded.contains(currentRoute),
                             onClick = {
                                 if (currentRoute != navigationItem.route) {
-                                    tabsNavController.navigate(navigationItem.route)
+                                    navController.navigate(navigationItem.route)
                                 }
                             },
                             label = null,
@@ -64,28 +65,35 @@ fun HomeScreen(
             Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
                 val uri = "https://example.com"
 
-                NavHost(navController = tabsNavController, startDestination = NavigationItem.CoffeeDrinks.route) {
-                    composable(NavigationItem.CoffeeDrinks.route) { CoffeeDrinksScreen(tabsNavController) }
+                NavHost(navController = navController, startDestination = NavigationItem.CoffeeDrinks.route) {
+                    composable(NavigationItem.CoffeeDrinks.route) {
+                        CoffeeDrinksScreen(
+                            navigateToCoffeeDrinkDetails = {
+                                navController.navigate(NavigationItem.CoffeeDrinkDetails.createRoute(it))
+                            }
+                        )
+                    }
 
-                    //   adb shell am start -W -a android.intent.action.VIEW -d "https://example.com/CoffeeDrinkDetails/coffeeDrinkId=10"
+                    //   adb shell am start -W -a android.intent.action.VIEW -d "https://example.com/CoffeeDrinkDetails/coffeeDrinkId=3"
                     composable(
                         route = NavigationItem.CoffeeDrinkDetails.route,
                         arguments = listOf(navArgument("coffeeDrinkId") { type = NavType.LongType } ),
                         deepLinks = listOf(navDeepLink { uriPattern = "$uri/CoffeeDrinkDetails/coffeeDrinkId={coffeeDrinkId}" })
                     ) {
                         CoffeeDrinkDetailsScreen(
-                            navController = tabsNavController,
+                            navController = navController,
                             coffeeDrinkId = it.arguments?.getLong("coffeeDrinkId") ?: -1L
                         )
                     }
 
-                    composable(NavigationItem.Basket.route) { BasketScreen(externalRouter, tabsNavController) }
+                    composable(NavigationItem.Basket.route) {
+                        BasketScreen(
+                            navigateToSuccess = { externalRouter.navigateTo(Screen.OrderSummary.route) }
+                        )
+                    }
 
-
-                    composable(
-                        NavigationItem.Profile.route
-                    ) {
-                        ProfileScreen(tabsNavController)
+                    composable(NavigationItem.Profile.route) {
+                        ProfileScreen()
                     }
                 }
             }

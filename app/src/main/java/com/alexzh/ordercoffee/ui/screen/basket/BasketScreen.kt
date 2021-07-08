@@ -14,20 +14,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.data.DummyData
 import com.alexzh.ordercoffee.data.model.BasketProduct
-import com.alexzh.ordercoffee.navigation.Router
-import com.alexzh.ordercoffee.navigation.createRouter
 import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 import java.math.BigDecimal
 
 @Composable
 fun BasketScreen(
-    externalRouter: Router,
-    tabsNavController: NavController,
+    navigateToSuccess: () -> Unit,
     viewModel: BasketViewModel = BasketViewModel()
 ) {
     viewModel.loadCoffeeDrinks()
@@ -35,39 +30,48 @@ fun BasketScreen(
         when (uiState) {
             is UiState.Loading -> { }
             is UiState.Success -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopAppBar {
-                        Text(
-                            text = "Basket",
-                            modifier = Modifier.padding(horizontal = 12.dp),
-                            fontSize = 18.sp
-                        )
-                    }
-                    PaymentInfo(
-                        deliveryCosts = BigDecimal(5),
-                        total = uiState.data.totalPrice,
-                        currency = '€',
-                        isPayButtonEnabled = uiState.data.products.isNotEmpty(),
-                        onPayed = {
-                            externalRouter.navigateTo("Success")
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ProductList(
-                        basketProducts = uiState.data.products,
-                        onProductIncreased = {
-                            viewModel.addCoffeeDrink(it)
-                        },
-                        onProductDecreased = {
-                            viewModel.removeCoffeeDrink(it)
-                        }
-                    )
-                }
+                BasketSuccessScreen(
+                    uiState.data,
+                    navigateToSuccess,
+                    addCoffeeDrink = { viewModel.addCoffeeDrink(it) },
+                    removeCoffeeDrink = { viewModel.removeCoffeeDrink(it) }
+                )
             }
             is UiState.Error -> { }
         }
+    }
+}
+
+@Composable
+fun BasketSuccessScreen(
+    state: BasketState,
+    navigateToSuccess: () -> Unit,
+    addCoffeeDrink: (Long) -> Unit,
+    removeCoffeeDrink: (Long) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        TopAppBar {
+            Text(
+                text = "Basket",
+                modifier = Modifier.padding(horizontal = 12.dp),
+                fontSize = 18.sp
+            )
+        }
+        PaymentInfo(
+            deliveryCosts = BigDecimal(5),
+            total = state.totalPrice,
+            currency = '€',
+            isPayButtonEnabled = state.products.isNotEmpty(),
+            onPayed = navigateToSuccess
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        ProductList(
+            basketProducts = state.products,
+            onProductIncreased = removeCoffeeDrink,
+            onProductDecreased = addCoffeeDrink
+        )
     }
 }
 
@@ -182,8 +186,9 @@ private fun ProductItem(
                 fontSize = 14.sp,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth()
-                        .padding(top = 4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
             )
         }
         Box(
@@ -241,7 +246,6 @@ private fun PaymentInfo_Preview() {
 @Composable
 private fun BasketScreen_Preview() {
     BasketScreen(
-        createRouter { },
-        rememberNavController()
+        navigateToSuccess = { }
     )
 }

@@ -1,6 +1,6 @@
 package com.alexzh.ordercoffee.ui.navigation
 
-sealed class Screen (val route: String) {
+sealed class Screen(val route: String) {
     object Home : Screen("Home")
-    object Success : Screen("Success")
+    object OrderSummary : Screen("Success")
 }

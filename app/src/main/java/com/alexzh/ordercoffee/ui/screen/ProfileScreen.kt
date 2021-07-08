@@ -14,15 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.alexzh.ordercoffee.R
 import com.alexzh.ordercoffee.model.ProfileItem
 
 @Composable
-fun ProfileScreen(
-    navController: NavController
-) {
+fun ProfileScreen() {
     val items = listOf(
         ProfileItem(
             id = 1L,
@@ -106,5 +102,5 @@ fun ProfileItem_Preview() {
 @Preview
 @Composable
 fun ProfileScreen_Preview() {
-    ProfileScreen(rememberNavController())
+    ProfileScreen()
 }
