@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
 @Parcelize
-data class Product(
+data class CoffeeDrink(
     val id: Long,
     val name: String,
     @DrawableRes val image: Int,

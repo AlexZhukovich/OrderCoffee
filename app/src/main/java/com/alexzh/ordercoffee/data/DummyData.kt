@@ -1,12 +1,12 @@
 package com.alexzh.ordercoffee.data
 
 import com.alexzh.ordercoffee.R
-import com.alexzh.ordercoffee.data.model.BasketProduct
-import com.alexzh.ordercoffee.data.model.Product
+import com.alexzh.ordercoffee.data.model.OrderCoffeeDrink
+import com.alexzh.ordercoffee.data.model.CoffeeDrink
 import java.math.BigDecimal
 
 object DummyData {
-    val AMERICANO = Product(
+    val AMERICANO = CoffeeDrink(
         id = 1L,
         name = "Americano",
         image = R.drawable.americano_small,
@@ -15,7 +15,7 @@ object DummyData {
         price = BigDecimal(6.5)
     )
 
-    val CAPPUCCINO = Product(
+    val CAPPUCCINO = CoffeeDrink(
         id = 2L,
         name = "Cappuccino",
         image = R.drawable.cappuccino_small,
@@ -24,7 +24,7 @@ object DummyData {
         price = BigDecimal(6.0)
     )
 
-    val ESPRESSO = Product(
+    val ESPRESSO = CoffeeDrink(
         id = 3L,
         name = "Espresso",
         image = R.drawable.espresso_small,
@@ -33,7 +33,7 @@ object DummyData {
         price = BigDecimal(5.0)
     )
 
-    val ESPRESSO_MACCHIATO = Product(
+    val ESPRESSO_MACCHIATO = CoffeeDrink(
         id = 4L,
         name = "Espresso Macchiato",
         image = R.drawable.espresso_macchiato_small,
@@ -42,7 +42,7 @@ object DummyData {
         price = BigDecimal(6.5)
     )
 
-    val FRAPPINO = Product(
+    val FRAPPINO = CoffeeDrink(
         id = 5L,
         name = "Frappino",
         image = R.drawable.frappino_small,
@@ -51,7 +51,7 @@ object DummyData {
         price = BigDecimal(6.0)
     )
 
-    val ICED_MOCHA = Product(
+    val ICED_MOCHA = CoffeeDrink(
         id = 6L,
         name = "Iced Mocha",
         image = R.drawable.iced_mocha_small,
@@ -60,7 +60,7 @@ object DummyData {
         price = BigDecimal(6.5)
     )
 
-    val IRISH_COFFEE = Product(
+    val IRISH_COFFEE = CoffeeDrink(
         id = 7L,
         name = "Irish coffee",
         image = R.drawable.irish_coffee_small,
@@ -69,7 +69,7 @@ object DummyData {
         price = BigDecimal(6.0)
     )
 
-    val LATTE = Product(
+    val LATTE = CoffeeDrink(
         id = 8L,
         name = "Latte",
         image = R.drawable.latte_small,
@@ -78,7 +78,7 @@ object DummyData {
         price = BigDecimal(6.0)
     )
 
-    private val LATTE_MACCHIATO = Product(
+    private val LATTE_MACCHIATO = CoffeeDrink(
         id = 9L,
         name = "Latte Macchiato",
         image = R.drawable.latte_macchiato_small,
@@ -87,7 +87,7 @@ object DummyData {
         price = BigDecimal(6.5)
     )
 
-    val MOCHA = Product(
+    val MOCHA = CoffeeDrink(
         id = 10L,
         name = "Mocha",
         image = R.drawable.mocha_small,
@@ -96,40 +96,23 @@ object DummyData {
         price = BigDecimal(6.0)
     )
 
-    fun getBasketProducts() = listOf(
-        BasketProduct(
-            product = ESPRESSO,
-            count = 1
-        ),
-        BasketProduct(
-            product = LATTE_MACCHIATO,
-            count = 2
-        ),
-        BasketProduct(
-            product = IRISH_COFFEE,
-            count = 2
-        ),
-        BasketProduct(
-            product = CAPPUCCINO,
-            count = 1
-        )
-    )
-
     fun getAllBasketCoffeeDrinks() = listOf(
-        BasketProduct(AMERICANO, 0),
-        BasketProduct(CAPPUCCINO, 0),
-        BasketProduct(ESPRESSO, 0),
-        BasketProduct(ESPRESSO_MACCHIATO, 0),
-        BasketProduct(FRAPPINO, 0),
-        BasketProduct(ICED_MOCHA, 0),
-        BasketProduct(IRISH_COFFEE, 0),
-        BasketProduct(LATTE, 0),
-        BasketProduct(LATTE_MACCHIATO, 0),
-        BasketProduct(MOCHA, 0)
+        OrderCoffeeDrink(AMERICANO, 0),
+        OrderCoffeeDrink(CAPPUCCINO, 0),
+        OrderCoffeeDrink(ESPRESSO, 0),
+        OrderCoffeeDrink(ESPRESSO_MACCHIATO, 0),
+        OrderCoffeeDrink(FRAPPINO, 0),
+        OrderCoffeeDrink(ICED_MOCHA, 0),
+        OrderCoffeeDrink(IRISH_COFFEE, 0),
+        OrderCoffeeDrink(LATTE, 0),
+        OrderCoffeeDrink(LATTE_MACCHIATO, 0),
+        OrderCoffeeDrink(MOCHA, 0)
     )
 
-    fun findBasketCoffeeDrink(coffeeDrinkId: Long) : BasketProduct? {
+    fun findBasketCoffeeDrink(coffeeDrinkId: Long) : OrderCoffeeDrink? {
         return getAllBasketCoffeeDrinks()
-            .firstOrNull { basketProduct -> basketProduct.product.id == coffeeDrinkId }
+            .firstOrNull { orderCoffeeDrink ->
+                orderCoffeeDrink.coffeeDrink.id == coffeeDrinkId
+            }
     }
 }

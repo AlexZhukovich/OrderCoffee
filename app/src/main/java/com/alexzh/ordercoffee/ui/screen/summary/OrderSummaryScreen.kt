@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.ordercoffee.R
-import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.data.model.OrderCoffeeDrink
 import com.alexzh.ordercoffee.ui.common.UiState
 
 @Composable
@@ -46,7 +46,7 @@ fun OrderSummaryScreen(
 
 @Composable
 fun OrderSummarySuccessScreen(
-    orderSummaryState: UiState.Success<List<BasketProduct>>,
+    orderSummaryState: UiState.Success<List<OrderCoffeeDrink>>,
     onDone: () -> Unit
 ) {
     Column(
@@ -87,7 +87,7 @@ fun OrderSummarySuccessScreen(
                                         .padding(horizontal = 16.dp)
                                 ) {
                                     Text(
-                                        text = it.product.name,
+                                        text = it.coffeeDrink.name,
                                         fontSize = 24.sp,
                                         modifier = Modifier.weight(1f)
                                     )

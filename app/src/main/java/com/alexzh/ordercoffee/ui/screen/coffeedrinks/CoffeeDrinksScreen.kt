@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.ordercoffee.data.DummyData
-import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.data.model.OrderCoffeeDrink
 import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 
@@ -57,7 +57,7 @@ fun CoffeeDrinksScreen(
 
 @Composable
 fun CoffeeDrinkList(
-    items: List<BasketProduct>,
+    items: List<OrderCoffeeDrink>,
     onCoffeeDrink: (Long) -> Unit,
     onCoffeeDrinkCountIncreased: (Long) -> Unit,
     onCoffeeDrinkCountDecreased: (Long) -> Unit
@@ -66,7 +66,7 @@ fun CoffeeDrinkList(
         items.forEach { item ->
             item {
                 CoffeeDrinkItem(
-                    basketProduct = item,
+                    orderCoffeeDrink = item,
                     onCoffeeDrink = onCoffeeDrink,
                     onCoffeeDrinkCountIncreased = onCoffeeDrinkCountIncreased,
                     onCoffeeDrinkCountDecreased = onCoffeeDrinkCountDecreased
@@ -79,7 +79,7 @@ fun CoffeeDrinkList(
 
 @Composable
 fun CoffeeDrinkItem(
-    basketProduct: BasketProduct,
+    orderCoffeeDrink: OrderCoffeeDrink,
     onCoffeeDrink: (Long) -> Unit,
     onCoffeeDrinkCountIncreased: (Long) -> Unit,
     onCoffeeDrinkCountDecreased: (Long) -> Unit
@@ -88,13 +88,13 @@ fun CoffeeDrinkItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onCoffeeDrink(basketProduct.product.id)
+                onCoffeeDrink(orderCoffeeDrink.coffeeDrink.id)
             }
 
     ) {
         // TODO: fix contentDescription
         Image(
-            painter = painterResource(id = basketProduct.product.image),
+            painter = painterResource(id = orderCoffeeDrink.coffeeDrink.image),
             contentDescription = null,
             modifier = Modifier
                 .size(96.dp)
@@ -106,12 +106,12 @@ fun CoffeeDrinkItem(
                 .padding(top = 4.dp)
         ) {
             Text(
-                text = basketProduct.product.name,
+                text = orderCoffeeDrink.coffeeDrink.name,
                 modifier = Modifier.fillMaxWidth(),
                 fontSize = 22.sp
             )
             Text(
-                text = basketProduct.product.description,
+                text = orderCoffeeDrink.coffeeDrink.description,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.fillMaxWidth()
@@ -123,9 +123,9 @@ fun CoffeeDrinkItem(
                 .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
         ) {
             ProductCounter(
-                basketProduct = basketProduct,
-                onProductIncreased = { onCoffeeDrinkCountIncreased(basketProduct.product.id) },
-                onProductDecreased = { onCoffeeDrinkCountDecreased(basketProduct.product.id) }
+                orderCoffeeDrink = orderCoffeeDrink,
+                onProductIncreased = { onCoffeeDrinkCountIncreased(orderCoffeeDrink.coffeeDrink.id) },
+                onProductDecreased = { onCoffeeDrinkCountDecreased(orderCoffeeDrink.coffeeDrink.id) }
             )
         }
     }
@@ -135,7 +135,7 @@ fun CoffeeDrinkItem(
 @Composable
 fun CoffeeDrinkItem_Preview() {
     CoffeeDrinkItem(
-        basketProduct = BasketProduct(DummyData.ESPRESSO, 3),
+        orderCoffeeDrink = OrderCoffeeDrink(DummyData.ESPRESSO, 3),
         onCoffeeDrink = { },
         onCoffeeDrinkCountIncreased = { },
         onCoffeeDrinkCountDecreased = { }

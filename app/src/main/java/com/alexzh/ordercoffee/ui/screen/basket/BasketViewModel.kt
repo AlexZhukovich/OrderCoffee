@@ -21,10 +21,10 @@ class BasketViewModel(
     fun loadCoffeeDrinks() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            repository.getAddedProducts()
-                .collect { products ->
-                    val totalPrice: BigDecimal = products.sumOf { it.product.price.multiply(BigDecimal(it.count)) }
-                    _uiState.value = UiState.Success(BasketState(products, totalPrice))
+            repository.getAddedOrderCoffeeDrinks()
+                .collect { orderCoffeeDrinks ->
+                    val totalPrice: BigDecimal = orderCoffeeDrinks.sumOf { it.coffeeDrink.price.multiply(BigDecimal(it.count)) }
+                    _uiState.value = UiState.Success(BasketState(orderCoffeeDrinks, totalPrice))
                 }
         }
     }

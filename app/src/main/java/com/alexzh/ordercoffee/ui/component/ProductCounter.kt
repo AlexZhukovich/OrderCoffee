@@ -17,11 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.ordercoffee.data.DummyData
-import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.data.model.OrderCoffeeDrink
 
 @Composable
 fun ProductCounter(
-    basketProduct: BasketProduct,
+    orderCoffeeDrink: OrderCoffeeDrink,
     onProductIncreased: (Long) -> Unit,
     onProductDecreased: (Long) -> Unit,
     modifier: Modifier = Modifier
@@ -44,11 +44,11 @@ fun ProductCounter(
                     .weight(1f)
                     .align(Alignment.CenterHorizontally)
                     .clickable {
-                        onProductIncreased(basketProduct.product.id)
+                        onProductIncreased(orderCoffeeDrink.coffeeDrink.id)
                     }
             )
             Text(
-                text = basketProduct.count.toString(),
+                text = orderCoffeeDrink.count.toString(),
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterHorizontally),
@@ -65,7 +65,7 @@ fun ProductCounter(
                     .weight(1f)
                     .align(Alignment.CenterHorizontally)
                     .clickable {
-                        onProductDecreased(basketProduct.product.id)
+                        onProductDecreased(orderCoffeeDrink.coffeeDrink.id)
                     }
             )
         }
@@ -75,12 +75,12 @@ fun ProductCounter(
 @Preview
 @Composable
 fun ProductCounter_Preview() {
-    val product = BasketProduct(
-        product = DummyData.IRISH_COFFEE,
+    val product = OrderCoffeeDrink(
+        coffeeDrink = DummyData.IRISH_COFFEE,
         count = 42
     )
     ProductCounter(
-        basketProduct = product,
+        orderCoffeeDrink = product,
         onProductIncreased = { },
         onProductDecreased = { }
     )

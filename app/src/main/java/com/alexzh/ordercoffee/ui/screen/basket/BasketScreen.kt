@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.ordercoffee.data.DummyData
-import com.alexzh.ordercoffee.data.model.BasketProduct
+import com.alexzh.ordercoffee.data.model.OrderCoffeeDrink
 import com.alexzh.ordercoffee.ui.common.UiState
 import com.alexzh.ordercoffee.ui.component.ProductCounter
 import java.math.BigDecimal
@@ -63,14 +63,14 @@ fun BasketSuccessScreen(
             deliveryCosts = BigDecimal(5),
             total = state.totalPrice,
             currency = '€',
-            isPayButtonEnabled = state.products.isNotEmpty(),
+            isPayButtonEnabled = state.orderCoffeeDrinks.isNotEmpty(),
             onPayed = navigateToSuccess
         )
         Spacer(modifier = Modifier.height(8.dp))
-        ProductList(
-            basketProducts = state.products,
-            onProductIncreased = removeCoffeeDrink,
-            onProductDecreased = addCoffeeDrink
+        CoffeeDrinkList(
+            orderCoffeeDrinks = state.orderCoffeeDrinks,
+            onCoffeeDrinkCountIncreased = removeCoffeeDrink,
+            onCoffeeDrinkCountDecreased = addCoffeeDrink
         )
     }
 }
@@ -142,18 +142,18 @@ private fun PayButton(
 }
 
 @Composable
-private fun ProductList(
-    basketProducts: List<BasketProduct>,
-    onProductIncreased: (Long) -> Unit,
-    onProductDecreased: (Long) -> Unit
+private fun CoffeeDrinkList(
+    orderCoffeeDrinks: List<OrderCoffeeDrink>,
+    onCoffeeDrinkCountIncreased: (Long) -> Unit,
+    onCoffeeDrinkCountDecreased: (Long) -> Unit
 ) {
     LazyColumn {
-        basketProducts.forEach { item ->
+        orderCoffeeDrinks.forEach { item ->
             item {
-                ProductItem(
-                    basketProduct = item,
-                    onProductIncreased = onProductIncreased,
-                    onProductDecreased = onProductDecreased
+                CoffeeDrinkItem(
+                    orderCoffeeDrink = item,
+                    onCoffeeDrinkCountIncreased = onCoffeeDrinkCountIncreased,
+                    onCoffeeDrinkCountDecreased = onCoffeeDrinkCountDecreased
                 )
                 Divider()
             }
@@ -162,10 +162,10 @@ private fun ProductList(
 }
 
 @Composable
-private fun ProductItem(
-    basketProduct: BasketProduct,
-    onProductIncreased: (Long) -> Unit,
-    onProductDecreased: (Long) -> Unit
+private fun CoffeeDrinkItem(
+    orderCoffeeDrink: OrderCoffeeDrink,
+    onCoffeeDrinkCountIncreased: (Long) -> Unit,
+    onCoffeeDrinkCountDecreased: (Long) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -177,12 +177,12 @@ private fun ProductItem(
                 .weight(1.0f)
         ) {
             Text(
-                text = basketProduct.product.name,
+                text = orderCoffeeDrink.coffeeDrink.name,
                 fontSize = 18.sp,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = basketProduct.product.description,
+                text = orderCoffeeDrink.coffeeDrink.description,
                 fontSize = 14.sp,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
@@ -194,12 +194,12 @@ private fun ProductItem(
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
+                .padding(8.dp)
         ) {
             ProductCounter(
-                basketProduct = basketProduct,
-                onProductIncreased = onProductIncreased,
-                onProductDecreased = onProductDecreased
+                orderCoffeeDrink = orderCoffeeDrink,
+                onProductIncreased = onCoffeeDrinkCountIncreased,
+                onProductDecreased = onCoffeeDrinkCountDecreased
             )
         }
     }
@@ -208,15 +208,15 @@ private fun ProductItem(
 
 @Preview
 @Composable
-private fun ProductItem_Preview() {
-    val product = BasketProduct(
-        product = DummyData.AMERICANO,
+private fun CoffeeDrinkItem_Preview() {
+    val orderCoffeeDrink = OrderCoffeeDrink(
+        coffeeDrink = DummyData.AMERICANO,
         count = 42
     )
-    ProductItem(
-        basketProduct = product,
-        onProductIncreased = { },
-        onProductDecreased = { }
+    CoffeeDrinkItem(
+        orderCoffeeDrink = orderCoffeeDrink,
+        onCoffeeDrinkCountIncreased = { },
+        onCoffeeDrinkCountDecreased = { }
     )
 }
 

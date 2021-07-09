@@ -24,7 +24,7 @@ fun CoffeeDrinkDetailsScreen(
     navController: NavController,
     coffeeDrinkId: Long
 ) {
-    val basketProduct = requireNotNull(DummyData.findBasketCoffeeDrink(coffeeDrinkId))
+    val orderCoffeeDrink = requireNotNull(DummyData.findBasketCoffeeDrink(coffeeDrinkId))
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -47,7 +47,7 @@ fun CoffeeDrinkDetailsScreen(
         )
         Box(modifier = Modifier.fillMaxSize()) {
             Text(
-                text = basketProduct.product.name,
+                text = orderCoffeeDrink.coffeeDrink.name,
                 fontSize = 42.sp,
                 modifier = Modifier.align(Alignment.Center)
             )
