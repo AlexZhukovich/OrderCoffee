@@ -26,10 +26,11 @@ fun OrderSummaryScreen(
     navigateToHomeScreen: () -> Unit,
     viewModel: OrderSummaryViewModel = OrderSummaryViewModel()
 ) {
-    viewModel.loadCoffeeDrinks()
     viewModel.uiState.observeAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
-            is UiState.Loading -> { }
+            is UiState.Loading -> {
+                viewModel.loadCoffeeDrinks()
+            }
             is UiState.Success -> {
                 OrderSummarySuccessScreen(
                     orderSummaryState = uiState,

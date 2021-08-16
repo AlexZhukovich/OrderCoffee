@@ -25,10 +25,11 @@ fun CoffeeDrinksScreen(
     navigateToCoffeeDrinkDetails: (Long) -> Unit,
     viewModel: CoffeeDrinksViewModel = CoffeeDrinksViewModel()
 ) {
-    viewModel.loadCoffeeDrinks()
     viewModel.uiState.observeAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
-            is UiState.Loading -> { }
+            is UiState.Loading -> {
+                viewModel.loadCoffeeDrinks()
+            }
             is UiState.Success -> {
                 Column {
                     TopAppBar {
