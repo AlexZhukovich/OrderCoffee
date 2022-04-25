@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdk 30
-    buildToolsVersion "30.0.3"
+    compileSdk 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.alexzh.ordercoffee"
         minSdk 21
-        targetSdk 30
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -40,14 +40,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-    }
-}
-
-configurations.all {
-    resolutionStrategy {
-        force("androidx.compose.ui:ui-tooling:1.0.0-beta09")
-        force("androidx.compose.ui:ui-tooling-data:1.0.0-beta09")
-        force("androidx.compose.ui:ui-tooling-preview:1.0.0-beta09")
     }
 }
 
